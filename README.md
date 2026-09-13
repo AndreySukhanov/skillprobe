@@ -4,6 +4,10 @@
 
 ![python](https://img.shields.io/badge/python-3.10%2B-blue) ![license](https://img.shields.io/badge/license-MIT-green) ![status](https://img.shields.io/badge/status-alpha-orange)
 
+![skillprobe demo: 150 trials across five models, summary table, a Qwen failure from the report](docs/demo.gif)
+
+<sub>Real output of the bundled example, replayed from the response cache with `--cache-only`.</sub>
+
 ## Why
 
 A skill is a prompt with a trigger. Both halves fail quietly:
