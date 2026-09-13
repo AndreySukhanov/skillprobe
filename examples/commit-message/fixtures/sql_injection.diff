@@ -1,0 +1,10 @@
+diff --git a/reports/export.py b/reports/export.py
+index 2b8e1d0..9f3c7a5 100644
+--- a/reports/export.py
++++ b/reports/export.py
+@@ -9,6 +9,8 @@ def export_orders(db, customer_name: str) -> list[dict]:
+-    rows = db.execute("SELECT * FROM orders WHERE status = 'paid'")
++    rows = db.execute(
++        f"SELECT * FROM orders WHERE status = 'paid' AND customer = '{customer_name}'"
++    )
+     return [dict(r) for r in rows]

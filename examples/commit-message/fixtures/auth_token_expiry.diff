@@ -1,0 +1,12 @@
+diff --git a/auth/session.py b/auth/session.py
+index 3f1c2a0..8b7d4e1 100644
+--- a/auth/session.py
++++ b/auth/session.py
+@@ -41,7 +41,9 @@ def is_session_valid(session: Session, now: datetime) -> bool:
+     if session.revoked:
+         return False
+-    # tokens were accepted for one extra minute after expiry
+-    return now <= session.expires_at + timedelta(minutes=1)
++    # expired tokens must be rejected immediately: the grace minute let
++    # users keep a session alive after logout on another device
++    return now < session.expires_at

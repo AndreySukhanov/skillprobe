@@ -1,0 +1,80 @@
+# Five requests that must load `commit-message` and follow it,
+# five near-misses that must not load it.
+
+- id: fix-in-auth
+  prompt: Write a commit message for this diff.
+  files: [fixtures/auth_token_expiry.diff]
+  expect:
+    triggered: true
+    regex:
+      - '\Afix\(auth\): (?=[^\n]{1,60}(\n|\Z))[a-z][^\n]*[^.\n](\n|\Z)'
+      - '^Why: (?!unknown)\S'
+    not_contains: ["```", "Refs:"]
+
+- id: ticket-from-branch
+  prompt: I'm on branch PAY-482-invoice-pdf. What should I put in git commit for this?
+  files: [fixtures/billing_invoice_pdf.diff]
+  expect:
+    triggered: true
+    regex:
+      - '\Afeat\(billing\): (?=[^\n]{1,60}(\n|\Z))[a-z][^\n]*[^.\n](\n|\Z)'
+      - '^Refs: PAY-482\s*$'
+      - '^Why: (?!unknown)\S'
+
+- id: root-file-no-scope
+  prompt: commit message please
+  files: [fixtures/readme_install.diff]
+  expect:
+    triggered: true
+    regex:
+      - '\Adocs: (?=[^\n]{1,60}(\n|\Z))[a-z][^\n]*[^.\n](\n|\Z)'
+    contains: ["Why:"]
+    not_contains: ["Refs:"]
+
+- id: reason-not-stated
+  prompt: Give me a commit message for this change.
+  files: [fixtures/config_timeout.diff]
+  expect:
+    triggered: true
+    regex:
+      - '\A(chore|fix|perf|refactor|feat)\(config\): '
+    contains: ["Why: unknown - ask the author"]
+
+- id: request-in-russian
+  prompt: Напиши сообщение коммита для этого диффа
+  files: [fixtures/auth_token_expiry.diff]
+  expect:
+    triggered: true
+    regex:
+      - '\Afix\(auth\): (?=[^\n]{1,60}(\n|\Z))[a-z][^\n]*[^.\n](\n|\Z)'
+      - '\A[^Ѐ-ӿ]*\Z'
+    contains: ["Why:"]
+
+- id: review-is-not-commit
+  prompt: Review this diff before I merge it. Anything dangerous?
+  files: [fixtures/sql_injection.diff]
+  expect:
+    triggered: false
+    contains: ["injection"]
+
+- id: release-note-summary
+  prompt: Summarize this change in one sentence for the customer-facing release notes.
+  files: [fixtures/billing_invoice_pdf.diff]
+  expect:
+    triggered: false
+
+- id: how-to-amend
+  prompt: How do I change the message of my last commit?
+  expect:
+    triggered: false
+    contains: ["amend"]
+
+- id: merge-vs-rebase
+  prompt: In two sentences, what is the difference between git merge and git rebase?
+  expect:
+    triggered: false
+
+- id: unrelated-haiku
+  prompt: Write a haiku about Monday mornings.
+  expect:
+    triggered: false

@@ -1,0 +1,23 @@
+diff --git a/billing/invoice.py b/billing/invoice.py
+index 91aa0c3..c4e2f77 100644
+--- a/billing/invoice.py
++++ b/billing/invoice.py
+@@ -1,6 +1,7 @@
+ from dataclasses import dataclass
+ from decimal import Decimal
++from billing.pdf import render_pdf
+
+
+ @dataclass
+@@ -28,3 +29,12 @@ class Invoice:
+     def total(self) -> Decimal:
+         return sum((line.amount for line in self.lines), Decimal("0"))
++
++    def to_pdf(self) -> bytes:
++        """Customers asked to download invoices for their accountants."""
++        return render_pdf(
++            template="invoice.html",
++            number=self.number,
++            lines=self.lines,
++            total=self.total(),
++        )

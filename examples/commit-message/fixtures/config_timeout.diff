@@ -1,0 +1,10 @@
+diff --git a/config/settings.py b/config/settings.py
+index 0c4d9e2..1e7b3a8 100644
+--- a/config/settings.py
++++ b/config/settings.py
+@@ -18,7 +18,7 @@ DATABASE_URL = env("DATABASE_URL")
+ REDIS_URL = env("REDIS_URL", default="redis://localhost:6379/0")
+
+-PAYMENT_GATEWAY_TIMEOUT_S = 30
++PAYMENT_GATEWAY_TIMEOUT_S = 45
+ PAYMENT_GATEWAY_RETRIES = 2

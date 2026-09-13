@@ -1,0 +1,56 @@
+# Probe for the `commit-message` skill.
+# `code-review` is offered too, as a distractor: a good model loads the right one or none.
+
+skills:
+  - skills/commit-message
+  - skills/code-review
+target: commit-message
+cases: cases.yaml
+
+repeats: 3
+concurrency: 6
+max_cost_usd: 2.0
+
+# One OpenRouter key covers every model below (OPENROUTER_API_KEY).
+models:
+  - name: gpt-5.6-luna
+    model: openai/gpt-5.6-luna
+    extra_body: { reasoning: { effort: low } }
+
+  - name: qwen3.8-flash
+    model: qwen/qwen3.8-flash
+
+  - name: deepseek-v4.1-flash
+    model: deepseek/deepseek-v4.1-flash
+
+  - name: glm-5.3-flash
+    model: z-ai/glm-5.3-flash
+
+  - name: kimi-k3
+    model: moonshotai/kimi-k3
+
+# Direct vendor endpoints work the same way - set the provider and the vendor's model id
+# (ids below are illustrative, vendors rename models often - check their docs):
+#
+#  - name: qwen-direct
+#    provider: dashscope          # DASHSCOPE_API_KEY
+#    model: qwen-plus
+#
+#  - name: deepseek-direct
+#    provider: deepseek           # DEEPSEEK_API_KEY
+#    model: deepseek-chat
+#
+#  - name: glm-direct
+#    provider: zai                # ZAI_API_KEY
+#    model: glm-4.6
+#
+#  - name: yandexgpt
+#    provider: yandex             # YANDEX_API_KEY
+#    model: gpt://<folder-id>/yandexgpt/latest
+#
+# Any other OpenAI-compatible endpoint (a local vLLM, a GigaChat proxy, a corporate gateway):
+#
+# providers:
+#   my-gateway:
+#     base_url: http://localhost:8000/v1
+#     api_key_env: GATEWAY_KEY
